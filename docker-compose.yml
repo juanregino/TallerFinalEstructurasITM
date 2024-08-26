@@ -1,0 +1,24 @@
+services:
+    postgres:
+        container_name: pg_container
+        image: postgres:16-alpine
+        ports:
+            - "5433:5432"
+        environment:
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_DB: citas
+        # volumes:
+        #     - ./data:/var/lib/postgresql/data
+        restart: always
+
+    pgadmin:
+        image: dpage/pgadmin4
+        restart: always
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+            - PGADMIN_DEFAULT_PASSWORD=admin
+        # volumes:
+        #     - ./pgadmin:/root/.pgadmin
+        ports:
+            - 5050:80

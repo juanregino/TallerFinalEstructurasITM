@@ -2,6 +2,7 @@ package com.taller_final_estructuras.infraestructure.mappers;
 
 import org.springframework.stereotype.Component;
 
+import com.taller_final_estructuras.api.dto.request.DoctorRequest;
 import com.taller_final_estructuras.api.dto.response.DoctorResponse;
 import com.taller_final_estructuras.domain.entities.Doctor;
 
@@ -16,11 +17,11 @@ public class DoctorMapper {
         .build();
   }
 
-  public Doctor toEntity ( DoctorResponse response) {
+  public Doctor toEntity ( DoctorRequest request) {
     return Doctor.builder()
-        .name(response.getName())
-        .specialty(response.getSpecialty())
-        .build();
+        .name(request.getName())
+        .specialty(request.getSpecialty())
+        .build(); 
   }
 
 }

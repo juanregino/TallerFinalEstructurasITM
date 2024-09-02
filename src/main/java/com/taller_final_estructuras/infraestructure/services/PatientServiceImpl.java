@@ -11,6 +11,7 @@ import com.taller_final_estructuras.api.dto.response.PatientResponse;
 import com.taller_final_estructuras.domain.entities.Patient;
 import com.taller_final_estructuras.domain.repositories.PatientRepository;
 import com.taller_final_estructuras.infraestructure.abstract_services.PatientService;
+import com.taller_final_estructuras.infraestructure.mappers.AppointmentMapper;
 import com.taller_final_estructuras.infraestructure.mappers.PatientMapper;
 
 @Service
@@ -22,6 +23,9 @@ public class PatientServiceImpl implements PatientService {
 
   @Autowired
   private PatientMapper patientMapper;
+
+  @Autowired 
+  private AppointmentMapper appointmentMapper;
   @Override
   public PatientAppointmentResponse create(PatientRequest rq) {
     Patient patient = patientMapper.toEntity(rq);
@@ -39,13 +43,13 @@ public class PatientServiceImpl implements PatientService {
   @Override
   public List<PatientResponse> findAll() {
     
-    return this.patientRepository.findAll().stream().map(patientMapper::toResponse).toList();
+    return this.patientRepository.findAll().stream().map(this::toResponse).toList();
   }
 
   @Override
   public  PatientResponse findById(Long id) {
     
-    return this.patientRepository.findById(id).map(patientMapper::toResponse).orElse(null);
+    return this.patientRepository.findById(id).map(this::toResponse).orElse(null);
   }
 
   @Override
@@ -60,6 +64,17 @@ public class PatientServiceImpl implements PatientService {
     patientRepository.save(patient);
     return patientMapper.toAppointmentResponse(patient);
     
+  }
+
+
+   private PatientResponse toResponse ( Patient patient ) {
+    return PatientResponse.builder()
+        .id(patient.getId())
+        .name(patient.getName())
+        .age(patient.getAge())
+        .bloodType(patient.getBloodType())
+        .appointments(patient.getAppointments().stream().map(appointmentMapper::toAppointmentToPatientResponse).toList())
+        .build();
   }
   
 }

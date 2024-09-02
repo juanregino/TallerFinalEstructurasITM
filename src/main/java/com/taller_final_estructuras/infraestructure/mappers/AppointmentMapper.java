@@ -21,23 +21,6 @@ public class AppointmentMapper {
 
   private final DoctorRepository doctorRepository;
 
-  @Autowired
-
-  private final DoctorMapper doctorMapper;
-
-  @Autowired
-  private final PatientMapper patientMapper;
-
-  public AppointmentResponse toResponse(Appointment appointment) {
-    return AppointmentResponse.builder()
-        .id(appointment.getId())
-        .description(appointment.getDescription())
-        .date(appointment.getDate().toString())
-        .patient(patientMapper.toAppointmentResponse(appointment.getPatient()))
-        .doctor(doctorMapper.toResponse(appointment.getDoctor()))
-        .build();
-  }
-
   public Appointment toEntity(AppointmentRequest request) {
 
     return Appointment.builder()
@@ -48,7 +31,7 @@ public class AppointmentMapper {
         .build();
   }
 
-  public AppointmentToPatientResponse toAppointmentToPatientResponse ( Appointment appointment) {
+  public AppointmentToPatientResponse toAppointmentToPatientResponse(Appointment appointment) {
     return AppointmentToPatientResponse.builder()
         .id(appointment.getId())
         .description(appointment.getDescription())

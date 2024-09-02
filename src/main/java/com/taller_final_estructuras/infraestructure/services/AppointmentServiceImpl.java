@@ -12,6 +12,8 @@ import com.taller_final_estructuras.domain.entities.Appointment;
 import com.taller_final_estructuras.domain.repositories.AppointmentRepository;
 import com.taller_final_estructuras.infraestructure.abstract_services.AppointmentService;
 import com.taller_final_estructuras.infraestructure.mappers.AppointmentMapper;
+import com.taller_final_estructuras.infraestructure.mappers.DoctorMapper;
+import com.taller_final_estructuras.infraestructure.mappers.PatientMapper;
 
 @Service
 public class AppointmentServiceImpl  implements AppointmentService {
@@ -21,12 +23,17 @@ public class AppointmentServiceImpl  implements AppointmentService {
 
   @Autowired
   private AppointmentMapper appointmentMapper;
-
+  
+  @Autowired
+  private PatientMapper patientMapper;
+  @Autowired
+  private DoctorMapper doctorMapper;
+  
   @Override
-  public AppointmentResponse create(AppointmentRequest rq) {
+  public AppointmentResponse create(AppointmentRequest rq ) {
     Appointment appointment = appointmentMapper.toEntity(rq);
     appointmentRepository.save(appointment);
-    return appointmentMapper.toResponse(appointment);
+    return this.toResponse(appointment );
 
   }
 
@@ -39,14 +46,16 @@ public class AppointmentServiceImpl  implements AppointmentService {
   @Override
   public List<AppointmentResponse> findAll() {
     
-    return this.appointmentRepository.findAll().stream().map(appointmentMapper::toResponse).toList();
+    return this.appointmentRepository.findAll().stream().map(this::toResponse).toList();
   }
 
   @Override
   public AppointmentResponse findById(Long id) {
     
-    return this.appointmentRepository.findById(id).map(appointmentMapper::toResponse).orElse(null);
+    return this.appointmentRepository.findById(id).map(this::toResponse).orElse(null);
   }
+
+  
 
   @Override
   public AppointmentResponse update(AppointmentRequest rq, Long id) {
@@ -57,9 +66,18 @@ public class AppointmentServiceImpl  implements AppointmentService {
     appointment.setDescription(rq.getDescription());
     appointment.setDate(rq.getDate());
     appointmentRepository.save(appointment);
-    return appointmentMapper.toResponse(appointment);
+    return this.toResponse(appointment );
     
   }
   
+  public AppointmentResponse toResponse(Appointment appointment) {
+    return AppointmentResponse.builder()
+        .id(appointment.getId())
+        .description(appointment.getDescription())
+        .date(appointment.getDate().toString())
+        .patient(patientMapper.toAppointmentResponse(appointment.getPatient()))
+        .doctor(doctorMapper.toResponse(appointment.getDoctor()))
+        .build();
+  }
   
 }

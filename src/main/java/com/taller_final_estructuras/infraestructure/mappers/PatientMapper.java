@@ -12,21 +12,8 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class PatientMapper {
- 
 
-  private final AppointmentMapper appointmentMapper;
-  
-  public PatientResponse toResponse ( Patient patient) {
-    return PatientResponse.builder()
-        .id(patient.getId())
-        .name(patient.getName())
-        .age(patient.getAge())
-        .bloodType(patient.getBloodType())
-        .appointments(patient.getAppointments().stream().map(appointmentMapper::toAppointmentToPatientResponse).toList())
-        .build();
-  }
-
-  public Patient toEntity ( PatientRequest request) { 
+  public Patient toEntity(PatientRequest request) {
     return Patient.builder()
         .name(request.getName())
         .age(request.getAge())
@@ -34,13 +21,12 @@ public class PatientMapper {
         .build();
   }
 
-
-  public PatientAppointmentResponse toAppointmentResponse ( Patient patient) {
+  public PatientAppointmentResponse toAppointmentResponse(Patient patient) {
     return PatientAppointmentResponse.builder()
         .id(patient.getId())
         .name(patient.getName())
         .age(patient.getAge())
-        .bloodType(patient.getBloodType())        
+        .bloodType(patient.getBloodType())
         .build();
   }
 }

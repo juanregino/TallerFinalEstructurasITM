@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -21,6 +22,8 @@ public class PatientResponse {
   private int age;
 
   private String bloodType; 
+
+  private LocalDate nextAppointmentDate;
 
   private List<AppointmentToPatientResponse> appointments;
 }

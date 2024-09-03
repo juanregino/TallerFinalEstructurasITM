@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.taller_final_estructuras.api.dto.request.AppointmentRequest;
 import com.taller_final_estructuras.api.dto.response.AppointmentResponse;
+import com.taller_final_estructuras.api.dto.response.PatientResponse;
 import com.taller_final_estructuras.infraestructure.abstract_services.AppointmentService;
 
 @RestController
@@ -22,24 +23,7 @@ public class AppointMentController {
   private AppointmentService appointmentService;
  
   @PostMapping
-  public ResponseEntity<AppointmentResponse> createAppointment(AppointmentRequest appointment) { 
-
-    return ResponseEntity.ok(appointmentService.create(appointment));
-  }
-
-
-  @GetMapping
-  public ResponseEntity<List<AppointmentResponse>> getAppointments() {
-    return ResponseEntity.ok(appointmentService.findAll());
-  }
-
-  @GetMapping("/{id}")
-  public ResponseEntity<AppointmentResponse> getAppointmentById(@PathVariable Long id) {
-    return ResponseEntity.ok(appointmentService.findById(id));
-  }
-
-  @PatchMapping("/{id}")
-  public ResponseEntity<AppointmentResponse> updateAppointment(@PathVariable Long id, AppointmentRequest appointment) {
-    return ResponseEntity.ok(appointmentService.update(appointment, id));
+  public ResponseEntity<List<PatientResponse>> createAllAppointments(){ 
+    return ResponseEntity.ok(appointmentService.createAppointmentsForAllPatients());
   }
 }

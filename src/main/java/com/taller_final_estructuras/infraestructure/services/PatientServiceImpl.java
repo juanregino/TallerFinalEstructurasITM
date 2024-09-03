@@ -66,6 +66,7 @@ public class PatientServiceImpl implements PatientService {
     
   }
 
+  
 
    private PatientResponse toResponse ( Patient patient ) {
     return PatientResponse.builder()
